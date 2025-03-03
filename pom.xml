@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.raven-source</groupId>
+        <artifactId>raven-framework</artifactId>
+        <version>5.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>raven-hibernate</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>raven-hibernate-jpa-test</module>
+        <module>raven-hibernate-commons</module>
+        <module>raven-hibernate-jpa</module>
+        <module>raven-hibernate-jpa-starter</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <encoding>UTF-8</encoding>
+        <java.version>8</java.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+
+        <hibernate.version>5.6.15.Final</hibernate.version>
+        <hibernate-types-52.version>2.14.1</hibernate-types-52.version>
+        <spring-data-bom.version>2021.2.18</spring-data-bom.version>
+        <mysql-connector.version>8.2.0</mysql-connector.version>
+        <clickhouse-jdbc.version>0.6.5</clickhouse-jdbc.version>
+        <HikariCP.version>4.0.3</HikariCP.version>
+
+        <raven-framework.version>5.0.0-SNAPSHOT</raven-framework.version>
+
+        <raven-hibernate.version>${project.version}</raven-hibernate.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>io.github.raven-source</groupId>
+            <artifactId>raven-commons</artifactId>
+            <version>${raven-framework.version}</version>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>annotations</artifactId>
+            <version>3.0.1</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-annotations</artifactId>
+            <version>${spotbugs-annotations.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Raven Mongodb Library</description>
+    <url>https://raven-source.github.io/</url>
+
+    <scm>
+        <url>https://github.com/Raven-Source/raven-hibernate</url>
+        <connection>scm:git:https://github.com/Raven-Source/raven-hibernate.git</connection>
+        <developerConnection>scm:git:https://github.com/Raven-Source/raven-hibernate.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>yi.liang</name>
+            <email>indifer@126.com</email>
+            <organization>raven</organization>
+            <organizationUrl>https://github.com/Raven-Source</organizationUrl>
+        </developer>
+    </developers>
+
+    <dependencyManagement>
+
+        <dependencies>
+
+            <!-- https://mvnrepository.com/artifact/com.vladmihalcea/hibernate-types-52 -->
+            <dependency>
+                <groupId>com.vladmihalcea</groupId>
+                <artifactId>hibernate-types-52</artifactId>
+                <version>${hibernate-types-52.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-bom</artifactId>
+                <version>${spring-data-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+    <profiles>
+
+        <profile>
+            <id>deploy-nexus</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+            </modules>
+        </profile>
+
+    </profiles>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- mvn versions:set -DprocessAllModules=true -DnewVersion=1.x-SNAPSHOT -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <generateBackupPoms>false</generateBackupPoms>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>
