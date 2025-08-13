@@ -6,11 +6,11 @@
     <parent>
         <groupId>io.github.raven-source</groupId>
         <artifactId>raven-framework</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
+        <version>4.2.1</version>
     </parent>
 
     <artifactId>raven-hibernate</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -35,7 +35,7 @@
         <clickhouse-jdbc.version>0.6.5</clickhouse-jdbc.version>
         <HikariCP.version>4.0.3</HikariCP.version>
 
-        <raven-framework.version>5.0.0-SNAPSHOT</raven-framework.version>
+        <raven-framework.version>4.2.1</raven-framework.version>
 
         <raven-hibernate.version>${project.version}</raven-hibernate.version>
     </properties>

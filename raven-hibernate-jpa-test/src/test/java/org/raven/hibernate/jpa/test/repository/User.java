@@ -35,7 +35,7 @@ public class User extends BaseEntity<Long> implements Deletable {
     @CreatedDate
     protected Date createTime;
 
-    private Boolean deleted;
+    private Boolean deleted = false;
 
 
     @Id
