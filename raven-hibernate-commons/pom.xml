@@ -22,11 +22,11 @@
             <version>${raven-framework.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>io.github.raven-source</groupId>
-            <artifactId>raven-serializer-hibernate5-convert</artifactId>
-            <version>${raven-framework.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.github.raven-source</groupId>-->
+<!--            <artifactId>raven-serializer-hibernate5-convert</artifactId>-->
+<!--            <version>${raven-framework.version}</version>-->
+<!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/com.vladmihalcea/hibernate-types-52 -->
         <dependency>

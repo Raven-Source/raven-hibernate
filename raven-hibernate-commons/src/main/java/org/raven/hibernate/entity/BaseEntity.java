@@ -5,8 +5,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import org.raven.commons.data.Entity;
-import org.raven.serializer.hibernate.convert.StringTypeType;
-import org.raven.serializer.hibernate.convert.ValueTypeType;
+import org.raven.hibernate.convert.StringTypeType;
+import org.raven.hibernate.convert.ValueTypeType;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.EntityListeners;
