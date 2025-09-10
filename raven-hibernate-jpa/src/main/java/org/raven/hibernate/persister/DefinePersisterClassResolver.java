@@ -21,19 +21,19 @@ public class DefinePersisterClassResolver implements PersisterClassResolver {
     @Override
     public Class<? extends EntityPersister> getEntityPersisterClass(PersistentClass metadata) {
         // todo : make sure this is based on an attribute kept on the metamodel in the new code, not the concrete PersistentClass impl found!
-        if (RootClass.class.isInstance(metadata)) {
+        if (metadata instanceof RootClass) {
             if (metadata.hasSubclasses()) {
                 //If the class has children, we need to find of which kind
-                metadata = (PersistentClass) metadata.getDirectSubclasses().next();
+                metadata = (PersistentClass) metadata.getDirectSubclasses().get(0);
             } else {
                 return singleTableEntityPersister();
             }
         }
-        if (JoinedSubclass.class.isInstance(metadata)) {
+        if (metadata instanceof JoinedSubclass) {
             return joinedSubclassEntityPersister();
-        } else if (UnionSubclass.class.isInstance(metadata)) {
+        } else if (metadata instanceof UnionSubclass) {
             return unionSubclassEntityPersister();
-        } else if (SingleTableSubclass.class.isInstance(metadata)) {
+        } else if (metadata instanceof SingleTableSubclass) {
             return singleTableEntityPersister();
         } else {
             throw new UnknownPersisterException(

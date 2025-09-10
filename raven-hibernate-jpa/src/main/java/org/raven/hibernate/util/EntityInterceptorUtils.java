@@ -3,7 +3,7 @@ package org.raven.hibernate.util;
 import lombok.extern.slf4j.Slf4j;
 import org.raven.hibernate.entity.listeners.EntityInterceptor;
 
-import javax.persistence.EntityListeners;
+import jakarta.persistence.EntityListeners;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 

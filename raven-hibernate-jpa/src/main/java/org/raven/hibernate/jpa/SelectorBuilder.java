@@ -1,11 +1,12 @@
 package org.raven.hibernate.jpa;
 
 import lombok.NonNull;
-import org.hibernate.query.criteria.internal.CriteriaBuilderImpl;
-import org.raven.hibernate.function.CountDistinctFunction;
+//import org.hibernate.query.criteria.internal.CriteriaBuilderImpl;
+//import org.raven.hibernate.function.CountDistinctFunction;
+import org.raven.hibernate.dialect.SQLFunctions;
 import org.raven.hibernate.util.ManagedTypeUtils;
 
-import javax.persistence.criteria.*;
+import jakarta.persistence.criteria.*;
 import java.util.*;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
@@ -242,8 +243,11 @@ public class SelectorBuilder<S, T> extends AbstractBuilder<S, T> {
                 return countDistinct(attributes.iterator().next(), alias);
 
             } else {
+                //TODO
                 selections.add(
-                        new CountDistinctFunction((CriteriaBuilderImpl) builder, attributes).alias(alias)
+                        builder.function(SQLFunctions.countDistinct, Long.class, attributes.toArray(
+                                new Expression[0]
+                        ))
                 );
             }
         }

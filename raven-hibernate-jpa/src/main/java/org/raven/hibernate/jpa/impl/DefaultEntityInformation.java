@@ -1,5 +1,6 @@
 package org.raven.hibernate.jpa.impl;
 
+import jakarta.persistence.Tuple;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.persister.entity.EntityPersister;
 import org.raven.commons.data.Deletable;
@@ -7,17 +8,18 @@ import org.raven.hibernate.entity.listeners.EntityInterceptor;
 import org.raven.hibernate.jpa.EntityInformation;
 import org.raven.hibernate.util.EntityInterceptorUtils;
 import org.raven.hibernate.util.ManagedTypeUtils;
+import org.springframework.beans.BeanWrapper;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
+import org.springframework.data.util.DirectFieldAccessFallbackBeanWrapper;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.EntityManager;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
-import javax.persistence.metamodel.SingularAttribute;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.Metamodel;
+import jakarta.persistence.metamodel.SingularAttribute;
+
+import java.util.*;
+import java.util.function.Function;
 
 @Slf4j
 public class DefaultEntityInformation<T, ID> implements EntityInformation<T, ID> {
@@ -128,7 +130,7 @@ public class DefaultEntityInformation<T, ID> implements EntityInformation<T, ID>
     }
 
     @Override
-    public Iterable<String> getIdAttributeNames() {
+    public Collection<String> getIdAttributeNames() {
         return entityInformation.getIdAttributeNames();
     }
 
@@ -136,6 +138,34 @@ public class DefaultEntityInformation<T, ID> implements EntityInformation<T, ID>
     @Override
     public Object getCompositeIdAttributeValue(Object id, String idAttribute) {
         return entityInformation.getCompositeIdAttributeValue(id, idAttribute);
+    }
+
+    @Override
+    public Map<String, Object> getKeyset(Iterable<String> propertyPaths, T entity) {
+        Function<String, Object> getter = getPropertyValueFunction(entity);
+        Map<String, Object> keyset = new LinkedHashMap();
+        if (this.hasCompositeId()) {
+            for(String idAttributeName : this.getIdAttributeNames()) {
+                keyset.put(idAttributeName, getter.apply(idAttributeName));
+            }
+        } else {
+            keyset.put(this.getIdAttribute().getName(), this.getId(entity));
+        }
+
+        for(String propertyPath : propertyPaths) {
+            keyset.put(propertyPath, getter.apply(propertyPath));
+        }
+
+        return keyset;
+    }
+
+    private Function<String, Object> getPropertyValueFunction(Object entity) {
+        if (entity instanceof Tuple t) {
+            return t::get;
+        } else {
+            BeanWrapper entityWrapper = new DirectFieldAccessFallbackBeanWrapper(entity);
+            return entityWrapper::getPropertyValue;
+        }
     }
 
     @Override

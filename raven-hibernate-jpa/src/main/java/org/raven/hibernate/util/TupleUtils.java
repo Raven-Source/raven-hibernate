@@ -1,7 +1,7 @@
 package org.raven.hibernate.util;
 
-import javax.persistence.Tuple;
-import javax.persistence.TupleElement;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.TupleElement;
 import java.util.HashMap;
 import java.util.Map;
 

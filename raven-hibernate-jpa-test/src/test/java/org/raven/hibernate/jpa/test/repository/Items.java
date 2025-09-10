@@ -6,7 +6,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.raven.hibernate.entity.BaseEntity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Getter
 @Setter
@@ -22,11 +22,11 @@ import javax.persistence.*;
 public class Items extends BaseEntity<Long> {
 
     @Id
-    @TGenerator
+//    @TGenerator
 //    @GenericGenerator(name = DISTRIBUTED_ID_NAME, strategy = DISTRIBUTED_ID_STRATEGY)
     @GeneratedValue(
 //            generator = DISTRIBUTED_ID_NAME
-            strategy = GenerationType.AUTO
+            strategy = GenerationType.IDENTITY
     )
     private Long id;
 

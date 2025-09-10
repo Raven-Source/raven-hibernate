@@ -1,6 +1,12 @@
 package org.raven.hibernate.jpa.test.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hibernate.annotations.TypeRegistration;
+import org.hibernate.annotations.TypeRegistrations;
+import org.raven.commons.data.StringType;
+import org.raven.commons.data.ValueType;
+import org.raven.hibernate.convert.NumberValueType;
+import org.raven.hibernate.convert.StringValueType;
 import org.raven.spring.commons.util.SpringContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,7 +26,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Map;
 
@@ -32,6 +38,10 @@ import java.util.Map;
 @EnableTransactionManagement
 @EntityScan(basePackageClasses = {Jsr310JpaConverters.class})
 @EnableJpaAuditing()
+@TypeRegistrations(value = {
+        @TypeRegistration(basicClass = ValueType.class, userType = NumberValueType.class),
+        @TypeRegistration(basicClass = StringType.class, userType = StringValueType.class),
+})
 public class JpaConfiguration {
 
     /**

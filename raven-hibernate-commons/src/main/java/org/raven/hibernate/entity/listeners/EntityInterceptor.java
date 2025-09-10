@@ -1,9 +1,9 @@
 package org.raven.hibernate.entity.listeners;
 
+import jakarta.persistence.criteria.CriteriaUpdate;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.repository.core.EntityInformation;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaUpdate;
 
 /**
  * date 2022/7/26 10:58

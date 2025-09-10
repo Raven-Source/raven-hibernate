@@ -4,12 +4,15 @@ package org.raven.hibernate.jpa.test.repository;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
 import org.raven.commons.data.Deletable;
+import org.raven.hibernate.convert.NumberValueType;
 import org.raven.hibernate.entity.BaseEntity;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -39,11 +42,11 @@ public class User extends BaseEntity<Long> implements Deletable {
 
 
     @Id
-    @TGenerator
+//    @TGenerator
 //    @GenericGenerator(name = DISTRIBUTED_ID_NAME, strategy = DISTRIBUTED_ID_STRATEGY)
     @GeneratedValue(
 //            generator = DISTRIBUTED_ID_NAME
-            strategy = GenerationType.AUTO
+            strategy = GenerationType.IDENTITY
     )
 //    @GeneratedValue(
 //            strategy = GenerationType.AUTO
@@ -52,7 +55,7 @@ public class User extends BaseEntity<Long> implements Deletable {
 
     private String name;
 
-    @Type(type = VALUE_TYPE_NAME)
+    @Type(value = NumberValueType.class)
     @Column(name = "user_type")
     private UserType type;
 

@@ -33,16 +33,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
-import javax.persistence.Tuple;
-import javax.persistence.criteria.*;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.*;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import static javax.persistence.criteria.Predicate.BooleanOperator.AND;
-import static javax.persistence.criteria.Predicate.BooleanOperator.OR;
+import static jakarta.persistence.criteria.Predicate.BooleanOperator.AND;
+import static jakarta.persistence.criteria.Predicate.BooleanOperator.OR;
 
 import org.raven.hibernate.jpa.test.repository.Orders.Fields;
 
@@ -177,7 +177,7 @@ public class RepositoryTest {
         Assert.assertEquals(list.size(), seed);
 
         // enum
-        List<Orders> ordersList = orderRepository.getByStatus(Status.Finish);
+        List<Orders> ordersList = orderRepository.getByStatus(StatusType.Finish);
         Assert.assertTrue(
                 orderRepository.containsAttribute(Fields.deleted) &&
                         orderRepository.containsAttribute("deleted")

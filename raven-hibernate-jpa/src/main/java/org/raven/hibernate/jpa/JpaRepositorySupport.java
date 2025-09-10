@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.support.JpaRepositoryImplementati
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.FluentQuery;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaQuery;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -269,6 +269,16 @@ public interface JpaRepositorySupport<T, ID> extends JpaRepositoryImplementation
     }
 
     @Override
+    default Page<T> findAll(Specification<T> spec, Specification<T> countSpec, Pageable pageable) {
+        throw new RuntimeException("nonsupport");
+    }
+
+    @Override
+    default <S extends T, R> R findBy(Specification<T> spec, Function<? super SpecificationFluentQuery<S>, R> queryFunction) {
+        throw new RuntimeException("nonsupport");
+    }
+
+    @Override
     default long count(Specification<T> spec) {
         throw new RuntimeException("nonsupport");
     }
@@ -289,6 +299,11 @@ public interface JpaRepositorySupport<T, ID> extends JpaRepositoryImplementation
 
     @Override
     default boolean exists(Specification<T> spec) {
+        throw new RuntimeException("nonsupport");
+    }
+
+    @Override
+    default long delete(Specification<T> spec) {
         throw new RuntimeException("nonsupport");
     }
 

@@ -2,7 +2,7 @@ package org.raven.hibernate.jpa.test.repository;
 
 import lombok.Data;
 
-import javax.persistence.Column;
+import jakarta.persistence.Column;
 import java.io.Serializable;
 
 @Data

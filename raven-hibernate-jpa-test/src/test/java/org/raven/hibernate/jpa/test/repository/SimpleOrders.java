@@ -6,7 +6,7 @@ import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.Type;
 import org.raven.commons.data.ValueType;
 
-import static org.raven.hibernate.entity.BaseEntity.VALUE_TYPE_NAME;
+//import static org.raven.hibernate.entity.BaseEntity.VALUE_TYPE_NAME;
 
 /**
  * @author by yanfeng
@@ -21,9 +21,9 @@ public class SimpleOrders {
 
     private String name;
 
-    private boolean del;
+    private Boolean deleted = false;
 
-    @Type(type = VALUE_TYPE_NAME)
+//    @Type(type = VALUE_TYPE_NAME)
     private StatusType status;
 
     public SimpleOrders() {
@@ -37,7 +37,7 @@ public class SimpleOrders {
     public SimpleOrders(Long id, boolean del) {
 
         this.id = id;
-        this.del = del;
+        this.deleted = del;
     }
 
     public SimpleOrders(Long id, ValueType<Integer> status) {

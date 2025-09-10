@@ -1,8 +1,8 @@
 package org.raven.hibernate.jpa;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.From;
-import javax.persistence.criteria.Selection;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.From;
+import jakarta.persistence.criteria.Selection;
 import java.util.List;
 
 /**

@@ -1,6 +1,6 @@
 package org.raven.hibernate.jpa;
 
-import javax.persistence.criteria.Join;
+import jakarta.persistence.criteria.Join;
 import java.util.List;
 import java.util.function.Function;
 

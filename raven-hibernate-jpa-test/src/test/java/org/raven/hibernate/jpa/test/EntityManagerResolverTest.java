@@ -1,4 +1,4 @@
-package org.raven.hibernate.jpa.test;//package org.raven.hibernate.jpa.test;
+package org.raven.hibernate.jpa.test;
 //
 //import org.raven.hibernate.jpa.test.repository.Orders;
 //import org.raven.hibernate.jpa.test.repository.User;
@@ -9,7 +9,7 @@ package org.raven.hibernate.jpa.test;//package org.raven.hibernate.jpa.test;
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.test.context.junit4.SpringRunner;
 //
-//import javax.persistence.EntityManager;
+//import jakarta.persistence.EntityManager;
 //
 //@RunWith(SpringRunner.class)
 ////@ActiveProfiles("test")

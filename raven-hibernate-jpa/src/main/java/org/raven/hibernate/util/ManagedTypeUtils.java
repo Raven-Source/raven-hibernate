@@ -1,23 +1,22 @@
 package org.raven.hibernate.util;
 
+import jakarta.persistence.criteria.From;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Selection;
+import jakarta.persistence.metamodel.Attribute;
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.ManagedType;
+import jakarta.persistence.metamodel.Metamodel;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
-import org.hibernate.metamodel.model.domain.spi.ManagedTypeDescriptor;
-import org.hibernate.metamodel.spi.MetamodelImplementor;
+import org.hibernate.metamodel.MappingMetamodel;
+import org.hibernate.metamodel.model.domain.internal.EntityTypeImpl;
+import org.hibernate.metamodel.model.domain.spi.JpaMetamodelImplementor;
+import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.persister.entity.EntityPersister;
-import org.hibernate.persister.entity.Queryable;
-import org.hibernate.persister.walking.spi.AttributeDefinition;
-import org.raven.commons.util.Lists;
 
-import javax.persistence.criteria.From;
-import javax.persistence.criteria.Selection;
-import javax.persistence.metamodel.Attribute;
-import javax.persistence.metamodel.ManagedType;
-import javax.persistence.metamodel.Metamodel;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -54,7 +53,7 @@ public class ManagedTypeUtils {
 
         }
 
-        return Lists.newArrayList();
+        return new ArrayList<>();
     }
 
     public static String getAttributeName(ManagedType<?> managedType, String propertyColumnName) {
@@ -82,39 +81,44 @@ public class ManagedTypeUtils {
             columnsMap = new HashMap<>();
         }
 
-        if (entityPersister instanceof Queryable) {
-            Queryable queryable = (Queryable) entityPersister;
-            for (String propertyName : queryable.getPropertyNames()) {
-                String[] columns = queryable.toColumns(propertyName);
+        if (entityPersister instanceof AbstractEntityPersister) {
+            AbstractEntityPersister abstractEntityPersister = (AbstractEntityPersister) entityPersister;
+            for (String propertyName : entityPersister.getPropertyNames()) {
+                String[] columns = abstractEntityPersister.toColumns(propertyName);
                 for (String column : columns) {
                     columnsMap.put(column, propertyName);
                 }
             }
         }
 
+
         propertyColumnsMapAttributeMap.putIfAbsent(entityClass.getName(), columnsMap);
         return columnsMap;
     }
 
-    public static AttributeDefinition getAttributeDefinition(ManagedType<?> managedType, String attributeName) {
+    public static Attribute<?, ?> getAttribute(Root<?> root, String attributeName) {
 
-        EntityPersister entityPersister = getEntityPersister(managedType);
-        if (entityPersister == null) {
-            return null;
-        }
+        return getAttribute(root.getModel(), attributeName);
+    }
 
-        for (AttributeDefinition attribute : entityPersister.getAttributes()) {
+    public static Attribute<?, ?> getAttribute(EntityType<?> entityType, String attributeName) {
+
+        for (Attribute<?, ?> attribute : entityType.getAttributes()) {
+
             if (attribute.getName().equalsIgnoreCase(attributeName)) {
                 return attribute;
             }
         }
+
         return null;
     }
 
     public static EntityPersister getEntityPersister(Metamodel metamodel, Class<?> entityClass) {
 
-        if (metamodel instanceof MetamodelImplementor) {
-            return ((MetamodelImplementor) metamodel).entityPersister(entityClass);
+        if (metamodel instanceof JpaMetamodelImplementor) {
+            return ((JpaMetamodelImplementor) metamodel).getMappingMetamodel().getEntityDescriptor(entityClass);
+        } else if (metamodel instanceof MappingMetamodel) {
+            return ((MappingMetamodel) metamodel).getEntityDescriptor(entityClass);
         }
 
         return null;
@@ -127,32 +131,48 @@ public class ManagedTypeUtils {
 
         if (entityPersister == null) {
 
-            SessionFactoryImplementor sessionFactoryImplementor = getSessionFactory(managedType);
-            if (sessionFactoryImplementor != null) {
-                MetamodelImplementor metamodel = sessionFactoryImplementor.getMetamodel();
-
-                entityPersister = metamodel.entityPersister(entityClass);
-
-                if (entityPersister != null) {
-                    entityPersisterMap.putIfAbsent(entityClass.getName(), entityPersister);
-                }
-            }
+            JpaMetamodelImplementor metamodel = getMetamodel(managedType);
+            entityPersister = getEntityPersister(metamodel, entityClass);
+//            if (sessionFactoryImplementor != null) {
+//                Metamodel metamodel = sessionFactoryImplementor.getMetamodel();
+//
+//                entityPersister = getEntityPersister(metamodel, entityClass);
+//
+//                if (entityPersister != null) {
+//                    entityPersisterMap.putIfAbsent(entityClass.getName(), entityPersister);
+//                }
+//            }
         }
 
         return entityPersister;
 
     }
 
-    private static SessionFactoryImplementor getSessionFactory(ManagedType<?> managedType) {
+    private static JpaMetamodelImplementor getMetamodel(ManagedType<?> managedType) {
+        if (managedType instanceof EntityTypeImpl<?> entityTypeImpl) {
+            try {
+                Field field = EntityTypeImpl.class.getDeclaredField("metamodel");
+                field.setAccessible(true);
+                return (JpaMetamodelImplementor) field.get(entityTypeImpl);
 
-        if (managedType instanceof ManagedTypeDescriptor<?>) {
-            return sessionFactory((ManagedTypeDescriptor<?>) managedType);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
         }
 
         return null;
     }
 
-    private static SessionFactoryImplementor sessionFactory(ManagedTypeDescriptor<?> managedTypeDescriptor) {
-        return managedTypeDescriptor.makeSubGraph().sessionFactory();
-    }
+//    private static SessionFactoryImplementor getSessionFactory(ManagedType<?> managedType) {
+//
+////        if (managedType instanceof ManagedTypeDescriptor<?>) {
+////            return sessionFactory((ManagedTypeDescriptor<?>) managedType);
+////        }
+//
+//        return null;
+//    }
+
+//    private static SessionFactoryImplementor sessionFactory(ManagedTypeDescriptor<?> managedTypeDescriptor) {
+//        return managedTypeDescriptor.makeSubGraph().sessionFactory();
+//    }
 }

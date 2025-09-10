@@ -4,12 +4,15 @@ import org.hibernate.HibernateException;
 import org.hibernate.cache.spi.access.EntityDataAccess;
 import org.hibernate.cache.spi.access.NaturalIdDataAccess;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.metamodel.spi.RuntimeModelCreationContext;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
-import org.hibernate.persister.spi.PersisterCreationContext;
 
 public class CustomSingleTableEntityPersister extends SingleTableEntityPersister {
 
-    public CustomSingleTableEntityPersister(PersistentClass persistentClass, EntityDataAccess cacheAccessStrategy, NaturalIdDataAccess naturalIdRegionAccessStrategy, PersisterCreationContext creationContext) throws HibernateException {
+    public CustomSingleTableEntityPersister(PersistentClass persistentClass,
+                                            EntityDataAccess cacheAccessStrategy,
+                                            NaturalIdDataAccess naturalIdRegionAccessStrategy,
+                                            RuntimeModelCreationContext creationContext) throws HibernateException {
         super(persistentClass, cacheAccessStrategy, naturalIdRegionAccessStrategy, creationContext);
     }
 

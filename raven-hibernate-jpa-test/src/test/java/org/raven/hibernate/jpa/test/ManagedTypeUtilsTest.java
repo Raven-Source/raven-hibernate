@@ -1,7 +1,6 @@
 package org.raven.hibernate.jpa.test;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.persister.walking.spi.AttributeDefinition;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.EntityType;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -34,11 +34,12 @@ public class ManagedTypeUtilsTest {
             System.out.println(s);
         }
 
-        AttributeDefinition attributeDefinition = ManagedTypeUtils.getAttributeDefinition(entityType, Orders.Fields.refs);
-        Assert.assertTrue(attributeDefinition != null);
+//        AttributeDefinition attributeDefinition = ManagedTypeUtils.getAttributeDefinition(entityType, Orders.Fields.refs);
+//        Assert.assertTrue(attributeDefinition != null);
 
         Map<String, String> map = ManagedTypeUtils.columnsMapAttribute(entityType);
         Assert.assertTrue(map != null);
+        Assert.assertTrue(map.toString().equals("{codes=codes, create_time=createTime, items_id=itemsId, box=box, version=version, uid=user, update_time=updateTime, deleted=deleted, refs=refs, price=price, name=name, is_pay=isPay, status=status}"));
         System.out.println(map);
     }
 

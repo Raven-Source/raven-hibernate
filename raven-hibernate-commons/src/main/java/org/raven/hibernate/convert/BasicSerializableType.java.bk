@@ -1,0 +1,34 @@
+package org.raven.hibernate.convert;
+
+import org.hibernate.type.descriptor.WrapperOptions;
+import org.hibernate.type.descriptor.java.AbstractClassJavaType;
+import org.hibernate.type.descriptor.jdbc.JdbcType;
+import org.hibernate.type.descriptor.jdbc.JdbcTypeIndicators;
+import org.raven.commons.data.SerializableType;
+import org.raven.commons.data.SerializableTypeUtils;
+
+public abstract class BasicSerializableType<T extends SerializableType<?>> extends AbstractClassJavaType<T> {
+
+    protected Class<?> valueClass;
+
+    public BasicSerializableType(Class<T> type) {
+        super(type);
+
+        this.valueClass = SerializableTypeUtils.getGenericType(type);
+    }
+
+    @Override
+    public JdbcType getRecommendedJdbcType(JdbcTypeIndicators context) {
+        return context.getTypeConfiguration().getBasicTypeForJavaType(valueClass).getJdbcType();
+    }
+
+    @Override
+    public <X> X unwrap(T value, Class<X> type, WrapperOptions options) {
+        return (X) value.getValue();
+    }
+
+    @Override
+    public <X> T wrap(X value, WrapperOptions options) {
+        return SerializableTypeUtils.valueOf(getJavaTypeClass(), value);
+    }
+}

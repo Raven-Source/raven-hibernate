@@ -3,7 +3,7 @@ package org.raven.hibernate.jpa.impl;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.criteria.internal.PathImplementor;
+import org.hibernate.query.sqm.tree.domain.AbstractSqmPath;
 import org.raven.commons.data.Deletable;
 import org.raven.commons.util.CollectionUtils;
 import org.raven.commons.util.Lists;
@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.provider.PersistenceProvider;
 import org.springframework.data.jpa.repository.support.CrudMethodMetadata;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
@@ -26,10 +27,11 @@ import org.springframework.data.jpa.repository.support.JpaRepositoryImplementati
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
-import javax.persistence.criteria.*;
+import jakarta.persistence.*;
+import jakarta.persistence.criteria.*;
 import java.lang.annotation.Annotation;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.jpa.repository.query.QueryUtils.*;
@@ -57,8 +59,8 @@ public class JpaRepositoryImpl<T, ID> //extends SimpleJpaRepository<T, ID>
 //    private final int BATCH_SIZE;
 
     static {
-//        hints.put("javax.persistence.cache.retrieveMode ", CacheRetrieveMode.BYPASS);
-        hints.put("javax.persistence.cache.storeMode", CacheStoreMode.BYPASS);
+//        hints.put("jakarta.persistence.cache.retrieveMode ", CacheRetrieveMode.BYPASS);
+        hints.put("jakarta.persistence.cache.storeMode", CacheStoreMode.BYPASS);
     }
 
     /**
@@ -666,9 +668,9 @@ public class JpaRepositoryImpl<T, ID> //extends SimpleJpaRepository<T, ID>
         if (CollectionUtils.isNotEmpty(selections)) {
 
             selections.forEach(x -> {
-                if (StringUtils.isBlank(x.getAlias()) && x instanceof PathImplementor) {
+                if (StringUtils.isBlank(x.getAlias()) && x instanceof AbstractSqmPath) {
                     x.alias(
-                            ((PathImplementor<?>) x).getAttribute().getName()
+                            ((AbstractSqmPath<?>) x).getNavigablePath().getLocalName()
                     );
                 }
             });

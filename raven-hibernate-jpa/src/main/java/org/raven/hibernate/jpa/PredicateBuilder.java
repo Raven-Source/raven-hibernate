@@ -2,15 +2,15 @@ package org.raven.hibernate.jpa;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.query.criteria.internal.CriteriaBuilderImpl;
-import org.raven.hibernate.predicate.ArrayHasPredicate;
+//import org.hibernate.query.criteria.internal.CriteriaBuilderImpl;
+//import org.raven.hibernate.predicate.ArrayHasPredicate;
 import org.raven.hibernate.predicate.ArrayHasType;
 import org.raven.hibernate.predicate.ArrayValueType;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.From;
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.From;
+import jakarta.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -877,11 +877,11 @@ public abstract class PredicateBuilder<S, T, P extends PredicateBuilder<S, T, P>
                       ArrayHasType arrayHasType,
                       ArrayValueType arrayValueType,
                       Collection<?> values) {
-
-        ArrayHasPredicate has = new ArrayHasPredicate(
-                (CriteriaBuilderImpl) builder, attribute, arrayHasType, arrayValueType, values
-        );
-        predicates.add(has);
+// TODO
+//        ArrayHasPredicate has = new ArrayHasPredicate(
+//                (CriteriaBuilderImpl) builder, attribute, arrayHasType, arrayValueType, values
+//        );
+//        predicates.add(has);
         return (P) this;
     }
 

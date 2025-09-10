@@ -1,17 +1,19 @@
 package org.raven.hibernate.jpa.test.repository;
 
+import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
+import org.hibernate.type.SqlTypes;
 import org.raven.commons.data.Deletable;
 import org.raven.commons.data.Versioned;
+import org.raven.hibernate.convert.JsonType;
+import org.raven.hibernate.convert.NumberValueType;
 import org.raven.hibernate.entity.BaseEntity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +38,7 @@ public class Orders extends BaseEntity<Long> implements Deletable, Versioned<Lon
 //    @GenericGenerator(name = DISTRIBUTED_ID_NAME, strategy = DISTRIBUTED_ID_STRATEGY)
     @GeneratedValue(
 //            generator = DISTRIBUTED_ID_NAME
-            strategy = GenerationType.AUTO
+            strategy = GenerationType.IDENTITY
     )
     private Long id;
 
@@ -52,20 +54,20 @@ public class Orders extends BaseEntity<Long> implements Deletable, Versioned<Lon
 
     private BigDecimal price;
 
-    @Type(type = VALUE_TYPE_NAME)
+    @Type(value = NumberValueType.class)
     private StatusType status = StatusType.Finish;
 
     //    @Version
     private Long version = 1L;
 
-    @Type(type = JSON_TYPE_NAME)
+    @Type(JsonType.class)
     private Box box;
 
-    @Type(type = JSON_TYPE_NAME)
+    @Type(JsonType.class)
 //    @ElementCollection
     private List<Integer> refs = new ArrayList<>();
 
-    @Type(type = JSON_TYPE_NAME)
+    @Type(JsonType.class)
 //    @ElementCollection
     private List<String> codes = new ArrayList<>();
 

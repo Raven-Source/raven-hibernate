@@ -2,9 +2,9 @@ package org.raven.hibernate.jpa;
 
 import lombok.Getter;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.From;
-import javax.persistence.criteria.Join;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.From;
+import jakarta.persistence.criteria.Join;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 

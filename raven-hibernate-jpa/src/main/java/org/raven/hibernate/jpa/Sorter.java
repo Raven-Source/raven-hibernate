@@ -2,9 +2,9 @@ package org.raven.hibernate.jpa;
 
 import org.springframework.data.domain.Sort;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.From;
-import javax.persistence.criteria.Order;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.From;
+import jakarta.persistence.criteria.Order;
 import java.util.List;
 
 @FunctionalInterface

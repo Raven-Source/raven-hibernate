@@ -14,10 +14,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +49,7 @@ public interface OrderRepository extends JpaRepositorySupport<Orders, Long> {
     List<Orders> getByStatusNative(@Param("status") int status);
 
     @Query(value = " select t from Orders t where t.status = :status")
-    List<Orders> getByStatus(@Param("status") Status status);
+    List<Orders> getByStatus(@Param("status") StatusType status);
 
     default List<Map> subquery() {
 
@@ -174,7 +174,7 @@ public interface OrderRepository extends JpaRepositorySupport<Orders, Long> {
             sql.append("(?,?,?,?,?,?,?)");
         }
 
-        javax.persistence.Query query = entityManager.createNativeQuery(sql.toString());
+        jakarta.persistence.Query query = entityManager.createNativeQuery(sql.toString());
 
         i = 0;
         for (Orders order : orders) {

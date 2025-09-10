@@ -1,6 +1,6 @@
 package org.raven.hibernate.jpa;
 
-import javax.persistence.criteria.Order;
+import jakarta.persistence.criteria.Order;
 import java.util.List;
 import java.util.function.Function;
 

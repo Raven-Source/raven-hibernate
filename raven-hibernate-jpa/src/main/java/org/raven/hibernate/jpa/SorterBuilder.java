@@ -3,7 +3,7 @@ package org.raven.hibernate.jpa;
 import lombok.NonNull;
 import org.springframework.data.domain.Sort;
 
-import javax.persistence.criteria.*;
+import jakarta.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BooleanSupplier;

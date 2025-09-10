@@ -6,11 +6,11 @@
     <parent>
         <groupId>io.github.raven-source</groupId>
         <artifactId>raven-framework</artifactId>
-        <version>4.2.1</version>
+        <version>5.0.2</version>
     </parent>
 
     <artifactId>raven-hibernate</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -24,18 +24,25 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <encoding>UTF-8</encoding>
-        <java.version>8</java.version>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
 
-        <hibernate.version>5.6.15.Final</hibernate.version>
-        <hibernate-types-52.version>2.14.1</hibernate-types-52.version>
-        <spring-data-bom.version>2021.2.18</spring-data-bom.version>
-        <mysql-connector.version>8.2.0</mysql-connector.version>
-        <clickhouse-jdbc.version>0.6.5</clickhouse-jdbc.version>
-        <HikariCP.version>4.0.3</HikariCP.version>
+        <spring-data-bom.version>2025.0.3</spring-data-bom.version>
+        <spring-data-jpa.version>3.5.3</spring-data-jpa.version>
 
-        <raven-framework.version>4.2.1</raven-framework.version>
+        <hibernate.version>6.6.13.Final</hibernate.version>
+        <hibernate.common.version>7.0.3.Final</hibernate.common.version>
+<!--        <hypersistence-utils-hibernate-63.version>3.7.7</hypersistence-utils-hibernate-63.version>-->
+<!--        <hibernate-types-52.version>2.14.1</hibernate-types-52.version>-->
+        <mysql-connector.version>9.2.0</mysql-connector.version>
+        <clickhouse-jdbc.version>0.8.6</clickhouse-jdbc.version>
+        <HikariCP.version>5.1.0</HikariCP.version>
+
+        <checker-qual.version>3.49.5</checker-qual.version>
+        <antlr4-runtime.version>4.13.2</antlr4-runtime.version>
+        <jakarta.validation.version>3.0.2</jakarta.validation.version>
+        <raven-framework.version>5.0.2</raven-framework.version>
 
         <raven-hibernate.version>${project.version}</raven-hibernate.version>
     </properties>
@@ -46,6 +53,12 @@
             <groupId>io.github.raven-source</groupId>
             <artifactId>raven-commons</artifactId>
             <version>${raven-framework.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!--<dependency>
@@ -58,6 +71,13 @@
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
             <version>${spotbugs-annotations.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.checkerframework</groupId>
+            <artifactId>checker-qual</artifactId>
+            <version>${checker-qual.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -94,17 +114,22 @@
 
         <dependencies>
 
-            <!-- https://mvnrepository.com/artifact/com.vladmihalcea/hibernate-types-52 -->
-            <dependency>
+            <!--<dependency>
                 <groupId>com.vladmihalcea</groupId>
                 <artifactId>hibernate-types-52</artifactId>
                 <version>${hibernate-types-52.version}</version>
+            </dependency>-->
+
+            <dependency>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core</artifactId>
-                <version>${hibernate.version}</version>
+                <groupId>org.hibernate.common</groupId>
+                <artifactId>hibernate-commons-annotations</artifactId>
+                <version>${hibernate.common.version}</version>
             </dependency>
 
             <dependency>
@@ -115,6 +140,36 @@
                 <scope>import</scope>
             </dependency>
 
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring-data-jpa.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-runtime</artifactId>
+                <version>${antlr4-runtime.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>${jakarta.validation.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.persistence</groupId>
+                <artifactId>jakarta.persistence-api</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+
+            <!--<dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>2.0.17</version>
+            </dependency>-->
+
         </dependencies>
 
     </dependencyManagement>
@@ -122,12 +177,39 @@
     <profiles>
 
         <profile>
-            <id>deploy-nexus</id>
+            <id>deploy-central</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
+                <module>raven-hibernate-commons</module>
+                <module>raven-hibernate-jpa</module>
+                <module>raven-hibernate-jpa-starter</module>
             </modules>
+
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.8.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
 
     </profiles>

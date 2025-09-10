@@ -2,16 +2,18 @@ package org.raven.hibernate.jpa;
 
 import lombok.Getter;
 import lombok.NonNull;
+import org.hibernate.metamodel.model.domain.internal.AbstractAttribute;
+import org.hibernate.query.sqm.tree.from.SqmAttributeJoin;
 import org.raven.commons.util.StringUtils;
 import org.raven.hibernate.util.ManagedTypeUtils;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.From;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Path;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.ManagedType;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.From;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.ManagedType;
+import jakarta.persistence.metamodel.SingularAttribute;
 
 public abstract class AbstractBuilder<S, T> {
 
@@ -39,11 +41,22 @@ public abstract class AbstractBuilder<S, T> {
     }
 
     public <Y> Path<Y> getAttribute(@NonNull String attributeName) {
-        return getAttribute((EntityType<T>) from.getModel(), from, attributeName);
+        if (from.getModel() instanceof EntityType<T>) {
+            return getAttributePath((EntityType<T>) from.getModel(), from, attributeName);
+        } else if (from instanceof SqmAttributeJoin<S, T>) {
+            return getAttributePath((SqmAttributeJoin<S, T>) from, attributeName);
+        }
+
+        return from.get(attributeName);
     }
 
+    @SuppressWarnings("unchecked")
     public <Y, X> Path<Y> getAttribute(Join<T, X> join, @NonNull String attributeName) {
-        return getAttribute((EntityType<X>) join.getModel(), join, attributeName);
+        if (from instanceof SqmAttributeJoin<S, T>) {
+            return getAttributePath((SqmAttributeJoin<S, T>) join, attributeName);
+        }
+
+        return from.get(attributeName);
     }
 
     public <Y> Path<Y> getJoinAttribute(@NonNull String joinName, @NonNull String attributeName) {
@@ -51,7 +64,7 @@ public abstract class AbstractBuilder<S, T> {
     }
 
     @SuppressWarnings("unchecked")
-    protected <X, Y> Path<Y> getAttribute(ManagedType<X> managedType, Path<X> path, @NonNull String attributeName) {
+    protected <X, Y> Path<Y> getAttributePath(ManagedType<X> managedType, Path<X> path, @NonNull String attributeName) {
 
         SingularAttribute<? super X, Y> attribute = null;
 
@@ -72,4 +85,30 @@ public abstract class AbstractBuilder<S, T> {
         }
 
     }
+
+    protected <X, Y> Path<Y> getAttributePath(SqmAttributeJoin<S, T> attributeJoin, @NonNull String attributeName) {
+
+        Path<Y> attribute = null;
+
+        try {
+            attribute = attributeJoin.get(attributeName);
+        } catch (Exception ignored) {
+        }
+
+        if (attribute != null) {
+            return attribute;
+        } else if (from.getModel() instanceof AbstractAttribute) {
+            ManagedType<?> managedType = ((AbstractAttribute<?, ?, ?>) from.getModel()).getDeclaringType();
+            String readAttributeName = ManagedTypeUtils.getAttributeName(managedType, attributeName);
+            if (StringUtils.isNotBlank(readAttributeName)) {
+                return attributeJoin.get(readAttributeName);
+            } else {
+                return attributeJoin.get(attributeName);
+            }
+        }
+
+        return null;
+
+    }
+
 }

@@ -3,7 +3,7 @@ package org.raven.hibernate.jpa.test.repository;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Date;
 
 

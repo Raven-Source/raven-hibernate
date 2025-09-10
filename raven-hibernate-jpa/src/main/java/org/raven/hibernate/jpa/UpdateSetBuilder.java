@@ -1,13 +1,18 @@
 package org.raven.hibernate.jpa;
 
-import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import jakarta.persistence.metamodel.Attribute;
+import jakarta.persistence.metamodel.EntityType;
 import lombok.Getter;
-import org.hibernate.persister.walking.spi.AttributeDefinition;
+//import org.hibernate.persister.walking.spi.AttributeDefinition;
+//import org.raven.hibernate.util.ManagedTypeUtils;
+
+import jakarta.persistence.criteria.*;
+import jakarta.persistence.metamodel.ManagedType;
+import jakarta.persistence.metamodel.SingularAttribute;
+import org.hibernate.type.CustomType;
+import org.raven.hibernate.convert.JsonType;
 import org.raven.hibernate.util.ManagedTypeUtils;
 
-import javax.persistence.criteria.*;
-import javax.persistence.metamodel.ManagedType;
-import javax.persistence.metamodel.SingularAttribute;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -127,7 +132,7 @@ public class UpdateSetBuilder<T> extends AbstractBuilder<T, T> {
      *
      * @param attributeName name of the attribute to be updated
      * @param value         new value
-     * @param <X>       The type of value
+     * @param <X>           The type of value
      * @return the modified update query
      */
     public <X extends Number> UpdateSetBuilder<T> sum(String attributeName, X value) {
@@ -154,7 +159,7 @@ public class UpdateSetBuilder<T> extends AbstractBuilder<T, T> {
      *
      * @param attributeName name of the attribute to be updated
      * @param value         new value
-     * @param <X>       The type of value
+     * @param <X>           The type of value
      * @return the modified update query
      */
     public <X extends Number> UpdateSetBuilder<T> diff(String attributeName, X value) {
@@ -181,7 +186,7 @@ public class UpdateSetBuilder<T> extends AbstractBuilder<T, T> {
      *
      * @param attributeName name of the attribute to be updated
      * @param value         new value
-     * @param <X>       The type of value
+     * @param <X>           The type of value
      * @return the modified update query
      */
     public <X extends Number> UpdateSetBuilder<T> prod(String attributeName, X value) {
@@ -215,12 +220,18 @@ public class UpdateSetBuilder<T> extends AbstractBuilder<T, T> {
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     protected Object processCustomType(String attributeName, Object value) {
 
         if (!String.class.equals(value.getClass()) && !Object.class.equals(value.getClass())) {
-            AttributeDefinition attributeDefinition = ManagedTypeUtils.getAttributeDefinition((ManagedType<?>) from.getModel(), attributeName);
-            if (attributeDefinition != null && attributeDefinition.getType() instanceof JsonStringType) {
-                return ((JsonStringType) attributeDefinition.getType()).getJavaTypeDescriptor().toString(value);
+
+            Attribute<?, ?> attribute = ManagedTypeUtils.getAttribute((EntityType<?>) from.getModel(), attributeName);
+            if (attribute != null
+                    && attribute instanceof SingularAttribute singularAttribute
+                    && singularAttribute.getType() instanceof CustomType customType
+                    && customType.getUserType() instanceof JsonType) {
+
+                return customType.getJavaTypeDescriptor().toString(value);
             }
         }
 

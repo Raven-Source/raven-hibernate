@@ -2,10 +2,10 @@ package org.raven.hibernate.jpa;
 
 import lombok.NonNull;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.From;
-import javax.persistence.criteria.Join;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.From;
+import jakarta.persistence.criteria.Join;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
