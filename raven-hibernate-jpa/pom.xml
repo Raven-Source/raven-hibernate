@@ -6,10 +6,14 @@
     <parent>
         <groupId>io.github.raven-source</groupId>
         <artifactId>raven-hibernate</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>2.0.1</version>
     </parent>
 
     <artifactId>raven-hibernate-jpa</artifactId>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Raven Framework Library</description>
+    <url>https://raven-source.github.io/</url>
 
     <properties>
     </properties>

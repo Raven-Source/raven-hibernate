@@ -10,11 +10,11 @@
     </parent>
 
     <artifactId>raven-hibernate</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.1</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>raven-hibernate-jpa-test</module>
+<!--        <module>raven-hibernate-jpa-test</module>-->
         <module>raven-hibernate-commons</module>
         <module>raven-hibernate-jpa</module>
         <module>raven-hibernate-jpa-starter</module>
@@ -217,7 +217,7 @@
     <build>
         <plugins>
 
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.2</version>
@@ -225,6 +225,49 @@
                     <execution>
                         <goals>
                             <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
+
+            <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.12.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${encoding}</encoding>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <!-- 使用 CI 友好模式，保持 deploy 用完整 POM -->
+                    <flattenMode>oss</flattenMode>
+                    <!-- 生成的 POM 保存到 target 目录，覆盖源文件 -->
+                    <updatePomFile>true</updatePomFile>
+                </configuration>
+                <executions>
+                    <!-- 构建时自动生成 -->
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <!-- 清理时删除 -->
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
                         </goals>
                     </execution>
                 </executions>

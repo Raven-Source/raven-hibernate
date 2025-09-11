@@ -8,6 +8,7 @@
 *.ipr
 *.iws
 .idea/
+.flattened-pom.xml
 
 # Geany project file
 .geany
