@@ -23,8 +23,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ManagedTypeUtils {
 
-    private final static Map<String, Map<String, String>> propertyColumnsMapAttributeMap = new ConcurrentHashMap<>();
-    private final static Map<String, EntityPersister> entityPersisterMap = new ConcurrentHashMap<>();
+    private static final Map<String, Map<String, String>> propertyColumnsMapAttributeMap = new ConcurrentHashMap<>();
+    private static final Map<String, EntityPersister> entityPersisterMap = new ConcurrentHashMap<>();
+
 
     private ManagedTypeUtils() {
     }
@@ -133,6 +134,12 @@ public class ManagedTypeUtils {
 
             JpaMetamodelImplementor metamodel = getMetamodel(managedType);
             entityPersister = getEntityPersister(metamodel, entityClass);
+            if (entityPersister != null) {
+                entityPersisterMap.putIfAbsent(entityClass.getName(), entityPersister);
+            } else {
+                throw new RuntimeException("EntityPersister not found for " + entityClass.getName());
+            }
+
 //            if (sessionFactoryImplementor != null) {
 //                Metamodel metamodel = sessionFactoryImplementor.getMetamodel();
 //
@@ -161,6 +168,11 @@ public class ManagedTypeUtils {
         }
 
         return null;
+    }
+
+
+    public static SessionFactoryImplementor sessionFactory(EntityPersister entityPersister) {
+        return entityPersister.getFactory();
     }
 
 //    private static SessionFactoryImplementor getSessionFactory(ManagedType<?> managedType) {

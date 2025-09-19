@@ -113,6 +113,11 @@ public class JpaRepositoryImpl<T, ID> //extends SimpleJpaRepository<T, ID>
     }
 
     @Override
+    public EntityInformation<T, ID> entityInformation() {
+        return entityInformation;
+    }
+
+    @Override
     public CriteriaQuery<T> criteriaQuery() {
         return entityManager.getCriteriaBuilder().createQuery(getEntityType());
     }

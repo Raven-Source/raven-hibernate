@@ -24,11 +24,13 @@ public class Items extends BaseEntity<Long> {
     @Id
 //    @TGenerator
 //    @GenericGenerator(name = DISTRIBUTED_ID_NAME, strategy = DISTRIBUTED_ID_STRATEGY)
-    @GeneratedValue(
-//            generator = DISTRIBUTED_ID_NAME
-            strategy = GenerationType.IDENTITY
-    )
+//    @GeneratedValue(
+////            generator = DISTRIBUTED_ID_NAME
+//            strategy = GenerationType.IDENTITY
+//    )
     private Long id;
 
     private String name;
+
+    private Boolean isOpen = Boolean.FALSE;
 }

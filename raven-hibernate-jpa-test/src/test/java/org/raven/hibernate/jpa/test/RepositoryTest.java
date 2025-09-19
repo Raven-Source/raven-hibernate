@@ -20,6 +20,7 @@ import org.raven.hibernate.jpa.*;
 import org.raven.hibernate.jpa.test.repository.*;
 import org.raven.hibernate.predicate.ArrayHasType;
 import org.raven.hibernate.predicate.ArrayValueType;
+import org.raven.hibernate.util.EntityPersisterUtils;
 import org.raven.hibernate.util.TupleUtils;
 import org.raven.serializer.withJackson.JsonUtils;
 import org.raven.spring.commons.util.ContextHolderProvider;
@@ -35,6 +36,7 @@ import org.springframework.util.StopWatch;
 
 import jakarta.persistence.Tuple;
 import jakarta.persistence.criteria.*;
+
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.*;
@@ -103,6 +105,7 @@ public class RepositoryTest {
 
         for (int i = 0; i < (seed / 5); i++) {
             Items item = new Items();
+            item.setId((long) i + 1L);
             item.setName("商品：" + i);
 
             items.add(item);
@@ -1008,39 +1011,36 @@ public class RepositoryTest {
     }
 
 
-//    @Test
-//    public void insertBigBatchTest() {
-//
-//        long startTime = System.currentTimeMillis();
-//        int seed = 100000;
-//        System.out.println("startTime: " + startTime);
-//
-//        List<Orders> list = new ArrayList<>(1000);
-//        Orders orders;
-//        for (int i = 0; i < seed; i++) {
-//
-//            orders = new Orders();
-//            orders.setName("new name");
-//
-//            list.add(orders);
-//
-//            if (list.size() == 1000) {
-//
-//                orderRepository.insertBigBatch(list);
-//                list.clear();
-//            }
-//        }
-//
+    @Test
+    public void insertBigBatchTest() {
+
+        int seed = 100000;
+        List<Items> list = new ArrayList<>(seed);
+        Items items;
+        for (int i = 0; i < seed; i++) {
+
+            items = new Items();
+            items.setId((i + 1) * 100L);
+            items.setName("new name" + i);
+
+            list.add(items);
+        }
+
+        long startTime = System.currentTimeMillis();
+        System.out.println("startTime: " + startTime);
+
+        EntityPersisterUtils.bigBatchInsert(itemsRepository.entityInformation().getEntityPersister(), list, 5000);
+
 //        if (!list.isEmpty()) {
 //
 //            orderRepository.insertBigBatch(list);
 //            list.clear();
 //        }
-//
-//        long endTime = System.currentTimeMillis();
-//        System.out.println("insert " + seed + " orders time:" + (endTime - startTime));
-//
-//    }
+
+        long endTime = System.currentTimeMillis();
+        System.out.println("insert " + seed + " orders time:" + (endTime - startTime));
+
+    }
 
     @Test
     public void insertTest2() {

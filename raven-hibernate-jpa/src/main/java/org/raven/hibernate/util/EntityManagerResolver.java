@@ -1,4 +1,4 @@
-package org.raven.hibernate.util;//package org.raven.hibernate.utils;
+//package org.raven.hibernate.util;
 //
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Component;
@@ -6,6 +6,7 @@ package org.raven.hibernate.util;//package org.raven.hibernate.utils;
 //import jakarta.persistence.EntityManager;
 //import jakarta.persistence.metamodel.EntityType;
 //import jakarta.persistence.metamodel.Metamodel;
+//
 //import java.util.*;
 //import java.util.concurrent.ConcurrentHashMap;
 //

@@ -22,6 +22,8 @@ public interface JpaRepositorySupport<T, ID> extends JpaRepositoryImplementation
 
     EntityManager entityManager();
 
+    EntityInformation<T, ID> entityInformation();
+
     CriteriaQuery<T> criteriaQuery();
 
     TypedQuery<T> createQuery(CriteriaQuery<T> criteriaQuery);
