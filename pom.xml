@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.raven-source</groupId>
         <artifactId>raven-framework</artifactId>
-        <version>5.0.4</version>
+        <version>5.0.5</version>
     </parent>
 
     <artifactId>raven-hibernate</artifactId>
@@ -42,7 +42,7 @@
         <checker-qual.version>3.49.5</checker-qual.version>
         <antlr4-runtime.version>4.13.2</antlr4-runtime.version>
         <jakarta.validation.version>3.0.2</jakarta.validation.version>
-        <raven-framework.version>5.0.4</raven-framework.version>
+        <raven-framework.version>5.0.5</raven-framework.version>
 
         <raven-hibernate.version>${project.version}</raven-hibernate.version>
     </properties>
@@ -67,12 +67,12 @@
             <version>3.0.1</version>
         </dependency>-->
 
-        <dependency>
+        <!--<dependency>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
             <version>${spotbugs-annotations.version}</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.checkerframework</groupId>
