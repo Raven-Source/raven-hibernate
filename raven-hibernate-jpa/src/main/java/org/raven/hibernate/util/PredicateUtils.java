@@ -19,7 +19,10 @@ import jakarta.persistence.criteria.Predicate;
 import java.util.List;
 
 /**
- * date 2022/7/26 11:40
+ * Utility class for handling JPA Predicate related operations
+ *
+ * @author yi.liang
+ * @date 2022/7/26 11:40
  */
 @Slf4j
 public class PredicateUtils {
@@ -27,6 +30,13 @@ public class PredicateUtils {
     private PredicateUtils() {
     }
 
+    /**
+     * Checks if an attribute with the given name exists in the predicate
+     * 
+     * @param predicate the predicate to check
+     * @param attributeName the name of the attribute to look for
+     * @return true if the attribute exists in the predicate, false otherwise
+     */
     public static boolean existsAttribute(Predicate predicate, @NonNull String attributeName) {
 
         if (predicate != null) {
@@ -37,6 +47,13 @@ public class PredicateUtils {
         return false;
     }
 
+    /**
+     * Checks if an attribute with the given name exists in the list of expressions
+     * 
+     * @param expressions the list of expressions to check
+     * @param attributeName the name of the attribute to look for
+     * @return true if the attribute exists in the expressions, false otherwise
+     */
     public static boolean existsAttribute(List<Expression<Boolean>> expressions, @NonNull String attributeName) {
 
         if (CollectionUtils.isNotEmpty(expressions)) {

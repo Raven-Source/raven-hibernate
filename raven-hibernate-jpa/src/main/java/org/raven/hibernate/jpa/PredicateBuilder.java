@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 //import org.hibernate.query.criteria.internal.CriteriaBuilderImpl;
 //import org.raven.hibernate.predicate.ArrayHasPredicate;
+//import org.raven.hibernate.dialect.SQLFunctions;
+import org.hibernate.query.sqm.NodeBuilder;
+import org.hibernate.query.sqm.tree.expression.SqmExpression;
+import org.raven.hibernate.predicate.ArrayHasSqmPredicate;
 import org.raven.hibernate.predicate.ArrayHasType;
 import org.raven.hibernate.predicate.ArrayValueType;
 
@@ -11,6 +15,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.From;
 import jakarta.persistence.criteria.Predicate;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -877,11 +882,26 @@ public abstract class PredicateBuilder<S, T, P extends PredicateBuilder<S, T, P>
                       ArrayHasType arrayHasType,
                       ArrayValueType arrayValueType,
                       Collection<?> values) {
+
 // TODO
-//        ArrayHasPredicate has = new ArrayHasPredicate(
-//                (CriteriaBuilderImpl) builder, attribute, arrayHasType, arrayValueType, values
+        ArrayHasSqmPredicate has = new ArrayHasSqmPredicate(
+                (SqmExpression<?>) attribute, values, arrayHasType, arrayValueType, (NodeBuilder) builder
+        );
+        predicates.add(has);
+
+//        predicates.add(
+//                builder.isTrue(
+//                        builder.function(
+//                                "array_has",
+//                                Boolean.class,
+//                                attribute,
+//                                builder.literal(values),
+//                                builder.literal(arrayHasType),
+//                                builder.literal(arrayValueType)
+//                        )
+//                )
 //        );
-//        predicates.add(has);
+
         return (P) this;
     }
 

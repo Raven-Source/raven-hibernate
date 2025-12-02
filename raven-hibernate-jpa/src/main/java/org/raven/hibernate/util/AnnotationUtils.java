@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
+ * Annotation utility class for finding annotations in class inheritance structures
+ *
  * @author yi.liang
  * date 2021/9/16 20:19
  */
@@ -15,6 +17,14 @@ public class AnnotationUtils {
     }
 
 
+    /**
+     * Finds an annotation of the specified type in the given method and its superclass methods
+     * 
+     * @param method the method object
+     * @param annotationType the annotation type to find
+     * @param <A> the annotation type parameter
+     * @return the found annotation instance, or null if not found
+     */
     public static <A extends Annotation> A findAnnotation(Method method, Class<A> annotationType) {
         if (annotationType == null) {
             return null;
@@ -35,6 +45,14 @@ public class AnnotationUtils {
         }
     }
 
+    /**
+     * Finds an annotation of the specified type in the given class and its superclasses
+     * 
+     * @param clazz the class object
+     * @param annotationType the annotation type to find
+     * @param <A> the annotation type parameter
+     * @return the found annotation instance, or null if not found
+     */
     public static <A extends Annotation> A findAnnotation(Class<?> clazz, Class<A> annotationType) {
         if (annotationType == null) {
             return null;
@@ -49,6 +67,14 @@ public class AnnotationUtils {
         }
     }
 
+    /**
+     * Finds all annotations of the specified type in the class inheritance structure (including the current class and all its superclasses)
+     * 
+     * @param clazz the class object
+     * @param annotationType the annotation type to find
+     * @param <A> the annotation type parameter
+     * @return a list containing all found annotation instances
+     */
     public static <A extends Annotation> List<A> findAllInheritanceAnnotation(Class<?> clazz, Class<A> annotationType) {
 
         List<A> annotations = new ArrayList<>();

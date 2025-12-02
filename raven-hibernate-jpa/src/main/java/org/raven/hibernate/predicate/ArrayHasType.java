@@ -22,4 +22,13 @@ public enum ArrayHasType {
         return null;
     }
 
+    public static ArrayHasType nameOf(String name) {
+        for (ArrayHasType item : values()) {
+            if (item.name().equalsIgnoreCase(name)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
 }

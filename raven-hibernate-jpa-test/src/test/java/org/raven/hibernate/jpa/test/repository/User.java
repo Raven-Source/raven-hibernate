@@ -44,10 +44,10 @@ public class User extends BaseEntity<Long> implements Deletable {
     @Id
 //    @TGenerator
 //    @GenericGenerator(name = DISTRIBUTED_ID_NAME, strategy = DISTRIBUTED_ID_STRATEGY)
-    @GeneratedValue(
+//    @GeneratedValue(
 //            generator = DISTRIBUTED_ID_NAME
-            strategy = GenerationType.IDENTITY
-    )
+//            strategy = GenerationType.IDENTITY
+//    )
 //    @GeneratedValue(
 //            strategy = GenerationType.AUTO
 //    )

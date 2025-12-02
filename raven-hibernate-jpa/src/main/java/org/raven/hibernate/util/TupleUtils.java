@@ -5,11 +5,20 @@ import jakarta.persistence.TupleElement;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Utility class for handling JPA Tuple related operations
+ */
 public class TupleUtils {
 
     private TupleUtils() {
     }
 
+    /**
+     * Converts a Tuple object to Map<String, Object> format
+     * 
+     * @param tuple the Tuple object to convert
+     * @return a Map containing all elements from the Tuple, with aliases as keys and corresponding values
+     */
     public static Map<String, Object> tupleToMap(final Tuple tuple) {
 
         Map<String, Object> map = new HashMap<>();

@@ -10,11 +10,11 @@
     </parent>
 
     <artifactId>raven-hibernate</artifactId>
-    <version>2.0.4</version>
+    <version>2.0.5</version>
     <packaging>pom</packaging>
 
     <modules>
-<!--        <module>raven-hibernate-jpa-test</module>-->
+        <module>raven-hibernate-jpa-test</module>
         <module>raven-hibernate-commons</module>
         <module>raven-hibernate-jpa</module>
         <module>raven-hibernate-jpa-starter</module>
@@ -36,8 +36,8 @@
 <!--        <hypersistence-utils-hibernate-63.version>3.7.7</hypersistence-utils-hibernate-63.version>-->
 <!--        <hibernate-types-52.version>2.14.1</hibernate-types-52.version>-->
         <mysql-connector.version>9.2.0</mysql-connector.version>
-        <clickhouse-jdbc.version>0.8.6</clickhouse-jdbc.version>
-        <HikariCP.version>5.1.0</HikariCP.version>
+        <clickhouse-jdbc.version>0.9.4</clickhouse-jdbc.version>
+        <HikariCP.version>6.3.2</HikariCP.version>
 
         <checker-qual.version>3.49.5</checker-qual.version>
         <antlr4-runtime.version>4.13.2</antlr4-runtime.version>

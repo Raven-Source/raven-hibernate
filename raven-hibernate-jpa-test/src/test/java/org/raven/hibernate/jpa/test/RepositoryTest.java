@@ -20,7 +20,7 @@ import org.raven.hibernate.jpa.*;
 import org.raven.hibernate.jpa.test.repository.*;
 import org.raven.hibernate.predicate.ArrayHasType;
 import org.raven.hibernate.predicate.ArrayValueType;
-import org.raven.hibernate.util.EntityPersisterUtils;
+import org.raven.hibernate.util.BatchExecuteUtils;
 import org.raven.hibernate.util.TupleUtils;
 import org.raven.serializer.withJackson.JsonUtils;
 import org.raven.spring.commons.util.ContextHolderProvider;
@@ -78,6 +78,7 @@ public class RepositoryTest {
         for (int i = 0; i < seed; i++) {
 
             User user = new User();
+            user.setId(i + 1L);
             user.setName("用户：" + i);
             user.setTenantId(((long) i % 2) + 1);
 
@@ -124,7 +125,7 @@ public class RepositoryTest {
 //            user.setTenantId(((long) i % 2) + 1);
 
 //            orders.setUser(user);
-//            orders.setId(i + 1L);
+            orders.setId(i + 1L);
             orders.setUid((long) uids.get(i / 2));
             orders.setItemsId(
                     items.get(i % items.size()).getId()
@@ -1029,7 +1030,7 @@ public class RepositoryTest {
         long startTime = System.currentTimeMillis();
         System.out.println("startTime: " + startTime);
 
-        EntityPersisterUtils.bigBatchInsert(itemsRepository.entityInformation().getEntityPersister(), list, 5000);
+        BatchExecuteUtils.batchInsert(itemsRepository.entityInformation().getEntityPersister(), list, 5000);
 
 //        if (!list.isEmpty()) {
 //

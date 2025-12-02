@@ -1,11 +1,11 @@
 //package org.raven.hibernate.interceptor;
 //
 //import lombok.extern.slf4j.Slf4j;
-//import org.hibernate.internal.EmptyInterceptor;
+//import org.hibernate.resource.jdbc.spi.StatementInspector;
 //import org.raven.hibernate.sql.SqlFunctionConditionCleaner;
 //
 //@Slf4j
-//public class SqlStatementInterceptor extends EmptyInterceptor {
+//public class SqlStatementInterceptor implements StatementInspector {
 //
 //    private final SqlFunctionConditionCleaner conditionCleaner;
 //
@@ -17,7 +17,7 @@
 //    }
 //
 //    @Override
-//    public String onPrepareStatement(String sql) {
+//    public String inspect(String sql) {
 //        return conditionCleaner.optimize(sql);
 //    }
 //

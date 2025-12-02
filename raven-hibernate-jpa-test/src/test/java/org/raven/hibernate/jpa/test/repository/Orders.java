@@ -34,12 +34,12 @@ import java.util.List;
 public class Orders extends BaseEntity<Long> implements Deletable, Versioned<Long> {
 
     @Id
-    @TGenerator
+//    @TGenerator
 //    @GenericGenerator(name = DISTRIBUTED_ID_NAME, strategy = DISTRIBUTED_ID_STRATEGY)
-    @GeneratedValue(
+//    @GeneratedValue(
 //            generator = DISTRIBUTED_ID_NAME
-            strategy = GenerationType.IDENTITY
-    )
+//            strategy = GenerationType.IDENTITY
+//    )
     private Long id;
 
     private Long uid;

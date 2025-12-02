@@ -2,7 +2,8 @@ package org.raven.hibernate.dialect;
 
 
 import org.hibernate.boot.model.FunctionContributions;
-import org.raven.hibernate.dialect.mysql.MysqlCountDistinctFunction;
+import org.raven.hibernate.function.mysql.MysqlArrayHasFunction;
+import org.raven.hibernate.function.mysql.MysqlCountDistinctFunction;
 
 public class MySQLDialect extends org.hibernate.dialect.MySQLDialect {
 
@@ -23,6 +24,10 @@ public class MySQLDialect extends org.hibernate.dialect.MySQLDialect {
 
         functionContributions.getFunctionRegistry().register(
                 SQLFunctions.countDistinct, new MysqlCountDistinctFunction("", "", functionContributions.getTypeConfiguration())
+        );
+
+        functionContributions.getFunctionRegistry().register(
+                SQLFunctions.arrayHas, new MysqlArrayHasFunction("", "", functionContributions.getTypeConfiguration())
         );
     }
 }

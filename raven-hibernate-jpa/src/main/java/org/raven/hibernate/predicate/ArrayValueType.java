@@ -42,4 +42,13 @@ public enum ArrayValueType {
         }
         return null;
     }
+
+    public static ArrayValueType nameOf(String name) {
+        for (ArrayValueType item : values()) {
+            if (item.name().equalsIgnoreCase(name)) {
+                return item;
+            }
+        }
+        return null;
+    }
 }
