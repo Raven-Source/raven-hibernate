@@ -988,7 +988,7 @@ public class RepositoryTest {
         for (int i = 0; i < seed; i++) {
 
             orders = new Orders();
-//            orders.setId(i * 100L);
+            orders.setId((i + 1) * 200L);
             orders.setName("new name");
 
             list.add(orders);
