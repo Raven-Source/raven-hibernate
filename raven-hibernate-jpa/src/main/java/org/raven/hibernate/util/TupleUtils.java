@@ -14,7 +14,7 @@ public class TupleUtils {
     }
 
     /**
-     * Converts a Tuple object to Map<String, Object> format
+     * Converts a Tuple object to {@code Map<String, Object>} format
      * 
      * @param tuple the Tuple object to convert
      * @return a Map containing all elements from the Tuple, with aliases as keys and corresponding values

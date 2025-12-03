@@ -22,7 +22,7 @@ import java.util.List;
  * Utility class for handling JPA Predicate related operations
  *
  * @author yi.liang
- * @date 2022/7/26 11:40
+ * date 2022/7/26 11:40
  */
 @Slf4j
 public class PredicateUtils {

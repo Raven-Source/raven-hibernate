@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>raven-hibernate-jpa-test</module>
+<!--        <module>raven-hibernate-jpa-test</module>-->
         <module>raven-hibernate-commons</module>
         <module>raven-hibernate-jpa</module>
         <module>raven-hibernate-jpa-starter</module>
