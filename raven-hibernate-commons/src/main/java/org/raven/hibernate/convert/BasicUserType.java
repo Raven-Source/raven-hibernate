@@ -1,7 +1,5 @@
 package org.raven.hibernate.convert;
 
-import org.hibernate.annotations.common.reflection.XProperty;
-import org.hibernate.annotations.common.reflection.java.JavaXMember;
 import org.hibernate.type.descriptor.jdbc.JdbcType;
 import org.hibernate.type.descriptor.jdbc.JdbcTypeJavaClassMappings;
 import org.hibernate.type.descriptor.jdbc.spi.JdbcTypeRegistry;
@@ -14,6 +12,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Properties;
 
+@SuppressWarnings("all")
 public abstract class BasicUserType<T> implements DynamicParameterizedType, TypeConfigurationAware, UserType<T> {
 
     public static final String TYPE = "type";
@@ -36,19 +35,7 @@ public abstract class BasicUserType<T> implements DynamicParameterizedType, Type
     @Override
     public void setParameterValues(Properties parameters) {
 
-        final XProperty xProperty = (XProperty) parameters.get(DynamicParameterizedType.XPROPERTY);
-        if (xProperty instanceof JavaXMember) {
-
-            Type type = ((JavaXMember) xProperty).getJavaType();
-            if (type instanceof ParameterizedType parameterizedType) {
-                this.javaTypeClass = (Class) parameterizedType.getRawType();
-            } else if (type instanceof Class<?>) {
-                this.javaTypeClass = (Class) type;
-            }
-
-        } else {
-            this.javaTypeClass = (Class) ((ParameterType) parameters.get(PARAMETER_TYPE)).getReturnedClass();
-        }
+        this.javaTypeClass = (Class) ((ParameterType) parameters.get(PARAMETER_TYPE)).getReturnedClass();
 
         JdbcTypeRegistry jdbcTypeRegistry = this.typeConfiguration.getJdbcTypeRegistry();
         int jdbcTypeCode;

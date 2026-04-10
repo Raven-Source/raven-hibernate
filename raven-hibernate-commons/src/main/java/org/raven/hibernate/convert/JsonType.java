@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Properties;
 
+@SuppressWarnings("all")
 @Slf4j
 public class JsonType
         extends BasicUserType<Object>
@@ -60,12 +61,12 @@ public class JsonType
 
     @Override
     public Serializable disassemble(Object value) {
-        return javaType.getMutabilityPlan().disassemble(value, null);
+        return value == null ? null : javaType.getMutabilityPlan().disassemble(value, null);
     }
 
     @Override
     public Object assemble(Serializable cached, Object owner) {
-        return javaType.getMutabilityPlan().assemble(cached, null);
+        return cached == null ? null : javaType.getMutabilityPlan().assemble(cached, null);
     }
 
     @Override

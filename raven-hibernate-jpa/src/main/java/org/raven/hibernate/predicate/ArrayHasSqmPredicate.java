@@ -4,6 +4,7 @@ import jakarta.persistence.criteria.Expression;
 import org.hibernate.query.sqm.NodeBuilder;
 import org.hibernate.query.sqm.SemanticQueryWalker;
 import org.hibernate.query.sqm.tree.SqmCopyContext;
+import org.hibernate.query.sqm.tree.SqmRenderContext;
 import org.hibernate.query.sqm.tree.expression.SqmExpression;
 import org.hibernate.query.sqm.tree.expression.SqmFunction;
 import org.hibernate.query.sqm.tree.expression.SqmLiteral;
@@ -174,10 +175,10 @@ public class ArrayHasSqmPredicate extends AbstractSqmPredicate {
     }
 
     @Override
-    public void appendHqlString(StringBuilder sb) {
+    public void appendHqlString(StringBuilder sb, SqmRenderContext context) {
         // 构建 HQL 字符串表示
         sb.append("array_has(");
-        arrayExpr.appendHqlString(sb);
+        arrayExpr.appendHqlString(sb, context);
         sb.append(", ");
         sb.append(buildJsonArray(values));
         sb.append(", ");
@@ -185,5 +186,21 @@ public class ArrayHasSqmPredicate extends AbstractSqmPredicate {
         sb.append(", ");
         sb.append(arrayValueType.getValue());
         sb.append(")");
+    }
+
+    @Override
+    public boolean isCompatible(Object object) {
+        return object instanceof ArrayHasSqmPredicate that
+                && this.isNegated() == that.isNegated()
+                && this.arrayExpr.isCompatible( that.arrayExpr )
+                && functionExpression.isCompatible( that.functionExpression);
+    }
+
+    @Override
+    public int cacheHashCode() {
+        int result = Boolean.hashCode( isNegated() );
+        result = 31 * result + arrayExpr.cacheHashCode();
+        result = 31 * result + values.hashCode();
+        return result;
     }
 }

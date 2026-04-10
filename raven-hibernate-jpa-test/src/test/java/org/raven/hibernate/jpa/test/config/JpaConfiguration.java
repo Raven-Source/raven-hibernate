@@ -1,22 +1,23 @@
 package org.raven.hibernate.jpa.test.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.annotations.TypeRegistration;
 import org.hibernate.annotations.TypeRegistrations;
 import org.raven.commons.data.StringType;
 import org.raven.commons.data.ValueType;
-import org.raven.hibernate.convert.NumberValueType;
-import org.raven.hibernate.convert.StringValueType;
+//import org.raven.hibernate.convert.NumberValueType;
+//import org.raven.hibernate.convert.StringValueType;
 import org.raven.spring.commons.util.SpringContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.jdbc.DataSourceHealthIndicator;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
-import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.health.contributor.HealthIndicator;
+import org.springframework.boot.hibernate.autoconfigure.HibernateProperties;
+import org.springframework.boot.hibernate.autoconfigure.HibernateSettings;
+import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
+import org.springframework.boot.jdbc.health.DataSourceHealthIndicator;
+import org.springframework.boot.jpa.EntityManagerFactoryBuilder;
+import org.springframework.boot.jpa.autoconfigure.JpaProperties;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
@@ -27,6 +28,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import jakarta.persistence.EntityManagerFactory;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+
 import javax.sql.DataSource;
 import java.util.Map;
 
@@ -35,13 +39,14 @@ import java.util.Map;
  * date 2021.07.07 13:28
  */
 @Configuration
+@AutoConfigureAfter(JacksonAutoConfiguration.class)
 @EnableTransactionManagement
 @EntityScan(basePackageClasses = {Jsr310JpaConverters.class})
 @EnableJpaAuditing()
-@TypeRegistrations(value = {
-        @TypeRegistration(basicClass = ValueType.class, userType = NumberValueType.class),
-        @TypeRegistration(basicClass = StringType.class, userType = StringValueType.class),
-})
+//@TypeRegistrations(value = {
+//        @TypeRegistration(basicClass = ValueType.class, userType = NumberValueType.class),
+//        @TypeRegistration(basicClass = StringType.class, userType = StringValueType.class),
+//})
 public class JpaConfiguration {
 
     /**
@@ -52,7 +57,7 @@ public class JpaConfiguration {
     /**
      * 配置依赖，不可删除
      */
-    final ObjectMapper objectMapper;
+    final JsonMapper objectMapper;
 
     final DataSource dataSource;
 
@@ -62,7 +67,7 @@ public class JpaConfiguration {
 
     @Autowired
     public JpaConfiguration(SpringContextUtils springContextUtils
-            , ObjectMapper objectMapper
+            , JsonMapper objectMapper
             , DataSource dataSource
             , JpaProperties jpaProperties
             , HibernateProperties hibernateProperties) {

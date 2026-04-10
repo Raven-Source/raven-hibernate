@@ -3,7 +3,9 @@ package org.raven.hibernate.jpa;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.DeleteSpecification;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.UpdateSpecification;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.FluentQuery;
@@ -304,8 +306,14 @@ public interface JpaRepositorySupport<T, ID> extends JpaRepositoryImplementation
         throw new RuntimeException("nonsupport");
     }
 
+
     @Override
-    default long delete(Specification<T> spec) {
+    default long update(UpdateSpecification<T> spec) {
+        throw new RuntimeException("nonsupport");
+    }
+
+    @Override
+    default long delete(DeleteSpecification<T> spec) {
         throw new RuntimeException("nonsupport");
     }
 

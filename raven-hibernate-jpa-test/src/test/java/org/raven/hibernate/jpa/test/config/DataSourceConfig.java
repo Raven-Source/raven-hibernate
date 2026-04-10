@@ -2,7 +2,7 @@ package org.raven.hibernate.jpa.test.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -15,7 +15,7 @@ public class DataSourceConfig {
     @Bean
     @Primary
     @ConditionalOnProperty(name = "spring.datasource.driver-class-name", havingValue = "com.clickhouse.jdbc.ClickHouseDriver")
-    public DataSource dataSource(DataSourceProperties  properties) {
+    public DataSource dataSource(DataSourceProperties properties) {
         HikariConfig config = new HikariConfig();
 
         config.setJdbcUrl(properties.getUrl());

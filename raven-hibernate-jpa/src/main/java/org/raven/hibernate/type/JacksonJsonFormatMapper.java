@@ -1,12 +1,12 @@
 package org.raven.hibernate.type;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.type.descriptor.java.JavaType;
 import org.hibernate.type.format.FormatMapper;
-import org.raven.hibernate.spi.ObjectMapperSupplier;
+import org.raven.hibernate.spi.JsonMapperSupplier;
 import org.raven.spring.commons.util.SpringContextUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.ServiceLoader;
 
@@ -16,20 +16,30 @@ import java.util.ServiceLoader;
 public class JacksonJsonFormatMapper implements FormatMapper {
 
     public static final JacksonJsonFormatMapper INSTANCE = new JacksonJsonFormatMapper();
-    private static ObjectMapperSupplier objectMapperSupplier;
+    private static JsonMapperSupplier jsonMapperSupplier;
 
     public static final String SHORT_NAME = "jackson";
 
-    private final ObjectMapper objectMapper;
+    private volatile JsonMapper jsonMapper = null;
 
     static {
-        ServiceLoader.load(ObjectMapperSupplier.class).forEach(supplier -> {
-            objectMapperSupplier = supplier;
+        ServiceLoader.load(JsonMapperSupplier.class).forEach(supplier -> {
+            jsonMapperSupplier = supplier;
         });
     }
 
     public JacksonJsonFormatMapper() {
-        objectMapper = objectMapperSupplier != null ? objectMapperSupplier.get() : SpringContextUtils.getBean(ObjectMapper.class);
+    }
+
+    private JsonMapper getJsonMapper() {
+        if (jsonMapper == null) {
+            synchronized (this) {
+                if (jsonMapper == null) {
+                    jsonMapper = jsonMapperSupplier != null ? jsonMapperSupplier.get() : SpringContextUtils.getBean(JsonMapper.class);
+                }
+            }
+        }
+        return jsonMapper;
     }
 
     @Override
@@ -38,8 +48,8 @@ public class JacksonJsonFormatMapper implements FormatMapper {
             return (T) charSequence.toString();
         }
         try {
-            return objectMapper.readValue(charSequence.toString(), objectMapper.constructType(javaType.getJavaType()));
-        } catch (JsonProcessingException e) {
+            return getJsonMapper().readValue(charSequence.toString(), getJsonMapper().constructType(javaType.getJavaType()));
+        } catch (JacksonException e) {
             throw new IllegalArgumentException("Could not deserialize string to java type: " + javaType, e);
         }
     }
@@ -50,9 +60,9 @@ public class JacksonJsonFormatMapper implements FormatMapper {
             return (String) value;
         }
         try {
-            return objectMapper.writerFor(objectMapper.constructType(javaType.getJavaType()))
+            return getJsonMapper().writerFor(getJsonMapper().constructType(javaType.getJavaType()))
                     .writeValueAsString(value);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new IllegalArgumentException("Could not serialize object of java type: " + javaType, e);
         }
     }

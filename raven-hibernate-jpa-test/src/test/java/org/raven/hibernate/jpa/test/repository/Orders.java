@@ -54,7 +54,7 @@ public class Orders extends BaseEntity<Long> implements Deletable, Versioned<Lon
 
     private BigDecimal price;
 
-    @Type(value = NumberValueType.class)
+    @Type(NumberValueType.class)
     private StatusType status = StatusType.Finish;
 
     //    @Version

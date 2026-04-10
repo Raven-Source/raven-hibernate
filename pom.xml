@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.raven-source</groupId>
         <artifactId>raven-framework</artifactId>
-        <version>5.0.5</version>
+        <version>5.1.1</version>
     </parent>
 
     <artifactId>raven-hibernate</artifactId>
@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
-<!--        <module>raven-hibernate-jpa-test</module>-->
+        <module>raven-hibernate-jpa-test</module>
         <module>raven-hibernate-commons</module>
         <module>raven-hibernate-jpa</module>
         <module>raven-hibernate-jpa-starter</module>
@@ -24,25 +24,24 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <encoding>UTF-8</encoding>
-        <java.version>17</java.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>21</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <spring-data-bom.version>2025.0.3</spring-data-bom.version>
-        <spring-data-jpa.version>3.5.3</spring-data-jpa.version>
+        <spring-data-bom.version>2025.1.4</spring-data-bom.version>
+        <spring-data-jpa.version>4.0.4</spring-data-jpa.version>
 
-        <hibernate.version>6.6.13.Final</hibernate.version>
-        <hibernate.common.version>7.0.3.Final</hibernate.common.version>
-<!--        <hypersistence-utils-hibernate-63.version>3.7.7</hypersistence-utils-hibernate-63.version>-->
-<!--        <hibernate-types-52.version>2.14.1</hibernate-types-52.version>-->
-        <mysql-connector.version>9.2.0</mysql-connector.version>
-        <clickhouse-jdbc.version>0.9.4</clickhouse-jdbc.version>
-        <HikariCP.version>6.3.2</HikariCP.version>
+        <hibernate.version>7.2.6.Final</hibernate.version>
+<!--        <hibernate.common.version>7.0.3.Final</hibernate.common.version>-->
+        <mysql-connector.version>9.5.0</mysql-connector.version>
+        <clickhouse-jdbc.version>0.9.8</clickhouse-jdbc.version>
+        <HikariCP.version>7.0.2</HikariCP.version>
 
         <checker-qual.version>3.49.5</checker-qual.version>
         <antlr4-runtime.version>4.13.2</antlr4-runtime.version>
-        <jakarta.validation.version>3.0.2</jakarta.validation.version>
-        <raven-framework.version>5.0.5</raven-framework.version>
+        <jakarta.persistence.version>3.2.0</jakarta.persistence.version>
+<!--        <jakarta.validation.version>3.0.2</jakarta.validation.version>-->
+        <raven-framework.version>5.1.1</raven-framework.version>
 
         <raven-hibernate.version>${project.version}</raven-hibernate.version>
     </properties>
@@ -126,11 +125,11 @@
                 <version>${hibernate.version}</version>
             </dependency>
 
-            <dependency>
+            <!--<dependency>
                 <groupId>org.hibernate.common</groupId>
                 <artifactId>hibernate-commons-annotations</artifactId>
                 <version>${hibernate.common.version}</version>
-            </dependency>
+            </dependency>-->
 
             <dependency>
                 <groupId>org.springframework.data</groupId>
@@ -161,7 +160,7 @@
             <dependency>
                 <groupId>jakarta.persistence</groupId>
                 <artifactId>jakarta.persistence-api</artifactId>
-                <version>3.1.0</version>
+                <version>${jakarta.persistence.version}</version>
             </dependency>
 
             <!--<dependency>

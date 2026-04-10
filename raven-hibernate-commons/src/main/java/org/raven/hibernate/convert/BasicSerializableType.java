@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+@SuppressWarnings("all")
 public abstract class BasicSerializableType<T extends SerializableType<?>>
         extends BasicUserType<T>
         implements DynamicParameterizedType, TypeConfigurationAware
@@ -54,12 +55,12 @@ public abstract class BasicSerializableType<T extends SerializableType<?>>
 
     @Override
     public Serializable disassemble(T value) {
-        return (Serializable) value.getValue();
+        return value == null ? null : (Serializable) value.getValue();
     }
 
     @Override
     public T assemble(Serializable cached, Object owner) {
-        return (T) SerializableTypeUtils.valueOf(javaTypeClass, cached);
+        return cached == null ? null : (T) SerializableTypeUtils.valueOf(javaTypeClass, cached);
     }
 
     @Override

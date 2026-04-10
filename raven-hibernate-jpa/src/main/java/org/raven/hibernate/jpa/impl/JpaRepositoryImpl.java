@@ -18,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.provider.PersistenceProvider;
 import org.springframework.data.jpa.repository.support.CrudMethodMetadata;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
@@ -29,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
+
 import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.function.Function;
@@ -133,7 +133,9 @@ public class JpaRepositoryImpl<T, ID> //extends SimpleJpaRepository<T, ID>
 
     @Override
     public T findOne(ID id) {
-        T entity = findOne((root, builder) -> builder.equal(root.get(entityInformation.getIdAttribute()), id));
+        T entity = findOne((Filter<T>)
+                (root, builder) -> builder.equal(root.get(entityInformation.getIdAttribute()), id)
+        );
         return entity;
     }
 
@@ -324,7 +326,9 @@ public class JpaRepositoryImpl<T, ID> //extends SimpleJpaRepository<T, ID>
 
     @Override
     public boolean existsById(ID id) {
-        return count((root, builder) -> builder.equal(root.get(entityInformation.getIdAttribute()), id)) > 0;
+        return count((Filter<T>)
+                (root, builder) -> builder.equal(root.get(entityInformation.getIdAttribute()), id)
+        ) > 0;
     }
 
     @Override
@@ -537,7 +541,9 @@ public class JpaRepositoryImpl<T, ID> //extends SimpleJpaRepository<T, ID>
     @Transactional
     public void deleteById(@NonNull ID id) {
 
-        delete((root, builder) -> builder.equal(root.get(entityInformation.getIdAttribute()), id));
+        delete((Filter<T>)
+                (root, builder) -> builder.equal(root.get(entityInformation.getIdAttribute()), id)
+        );
     }
 
     @Override
@@ -545,7 +551,9 @@ public class JpaRepositoryImpl<T, ID> //extends SimpleJpaRepository<T, ID>
     @SuppressWarnings("unchecked")
     public void delete(@NonNull T entity) {
 
-        delete((root, builder) -> builder.equal(root.get(entityInformation.getIdAttribute()), entityInformation.getId(entity)));
+        delete((Filter<T>)
+                (root, builder) -> builder.equal(root.get(entityInformation.getIdAttribute()), entityInformation.getId(entity))
+        );
     }
 
     @Override
@@ -556,7 +564,9 @@ public class JpaRepositoryImpl<T, ID> //extends SimpleJpaRepository<T, ID>
             return;
         }
 
-        delete((root, builder) -> idsCriteria(builder, root, ids));
+        delete((Filter<T>)
+                (root, builder) -> idsCriteria(builder, root, ids)
+        );
     }
 
     @Override

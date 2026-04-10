@@ -3,11 +3,8 @@ package org.raven.hibernate.jpa;
 import jakarta.persistence.metamodel.Attribute;
 import jakarta.persistence.metamodel.EntityType;
 import lombok.Getter;
-//import org.hibernate.persister.walking.spi.AttributeDefinition;
-//import org.raven.hibernate.util.ManagedTypeUtils;
 
 import jakarta.persistence.criteria.*;
-import jakarta.persistence.metamodel.ManagedType;
 import jakarta.persistence.metamodel.SingularAttribute;
 import org.hibernate.type.CustomType;
 import org.raven.hibernate.convert.JsonType;
@@ -220,7 +217,7 @@ public class UpdateSetBuilder<T> extends AbstractBuilder<T, T> {
         return this;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("all")
     protected Object processCustomType(String attributeName, Object value) {
 
         if (!String.class.equals(value.getClass()) && !Object.class.equals(value.getClass())) {

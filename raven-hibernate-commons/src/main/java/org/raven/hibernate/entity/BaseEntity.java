@@ -4,8 +4,8 @@ import org.hibernate.annotations.*;
 import org.raven.commons.data.Entity;
 import org.raven.commons.data.StringType;
 import org.raven.commons.data.ValueType;
-import org.raven.hibernate.convert.NumberValueType;
-import org.raven.hibernate.convert.StringValueType;
+//import org.raven.hibernate.convert.NumberValueType;
+//import org.raven.hibernate.convert.StringValueType;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.EntityListeners;

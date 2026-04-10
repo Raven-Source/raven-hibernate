@@ -20,6 +20,7 @@ import org.raven.hibernate.jpa.*;
 import org.raven.hibernate.jpa.test.repository.*;
 import org.raven.hibernate.predicate.ArrayHasType;
 import org.raven.hibernate.predicate.ArrayValueType;
+//import org.raven.hibernate.util.BatchExecuteUtils;
 import org.raven.hibernate.util.BatchExecuteUtils;
 import org.raven.hibernate.util.TupleUtils;
 import org.raven.serializer.withJackson.JsonUtils;
@@ -1117,7 +1118,7 @@ public class RepositoryTest {
     @Test
     public void deletableTest() {
 
-        Orders orders = orderRepository.findOne((root, builder) -> {
+        Orders orders = orderRepository.findOne((Filter)(root, builder) -> {
             return new FilterBuilder<>(root, builder).equal(Fields.deleted, true).build();
 
         });
@@ -1128,7 +1129,7 @@ public class RepositoryTest {
 
         Assert.assertEquals(orders.getDeleted(), false);
 
-        orders = orderRepository.findOne((root, builder) -> {
+        orders = orderRepository.findOne((Filter)(root, builder) -> {
             return new FilterBuilder<>(root, builder).equal(Fields.deleted, false).build();
         });
 
